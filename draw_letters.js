@@ -26,7 +26,7 @@ const shiftmult = 0.7;
  * from (0,0) to (100, 200)
  */
 function drawLetter(letterData) {
-  drawingContext.shadowColor = color(200,255,255);
+  drawingContext.shadowColor = color(0,255,0);
 
   noiseSeed(25);
   
@@ -70,19 +70,21 @@ function drawLetterForm(fillColour, letterData) {
   let prevContourCoords;
 
   let glitchOffset = letterData['percent'];
-  if(glitchOffset == undefined) glitchOffset = 50;
+  if(glitchOffset == undefined) glitchOffset = 0;
 
   glitchOffset = abs(glitchOffset);
 
   for(let i = 0; i < numLines; i++) {
+    let glitchBool = false;
+
     push();
-    if(glitchOffset > 30 && glitchOffset < 40 && i%2 == 0) {
+    if(glitchOffset > 30 && glitchOffset < 50 && i%2 == 0 && letterData['percent'] < 0) {
       c.setAlpha(255);
       let bigGlitch = 1 - ((i+4)%4);
       let scaleGlitch = 1 - ((i+4)%3);
       scale(1 + scaleGlitch*0.4, 1 + scaleGlitch*0.4);
       translate(bigGlitch*(letterWidth/10)-(letterWidth/10),0);
-      drawingContext.shadowColor = color(0,255,0);
+      glitchBool = true
     }
 
     let num = i+1;
@@ -99,8 +101,8 @@ function drawLetterForm(fillColour, letterData) {
     stroke(c);
 
     for(let j = 0; j < sublines; j++) {
-      if(j == 0) {
-        drawingContext.shadowBlur = 50;
+      if(j == 0 && glitchBool) {
+        drawingContext.shadowBlur = 40;
       } else {
         drawingContext.shadowBlur = 0;
       }
