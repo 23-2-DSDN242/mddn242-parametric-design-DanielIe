@@ -162,7 +162,6 @@ function drawLetter(posx, posy, letterData) {
 
 function drawLetterForm(fillColour, letterData) {
   let c = color(fillColour);
-  c.setAlpha(alpha);
 
   let prevLineCoords;
   let prevContourCoords;
@@ -181,13 +180,13 @@ function drawLetterForm(fillColour, letterData) {
     strokeWeight(letterHeight/numLines/sublines);
     stroke(c);
 
-    for(let j = 0; j < sublines; j++) {
-      let noiseVal = noise((i*sublines+j)*0.8);
-      let shift = map(pow(noiseVal, 5), 0, 1, 0, letterWidth/2) * shiftmult;
+    for(let j = 0; j < 4; j++) {
+      //let noiseVal = noise((i*sublines+j)*0.8);
+      //let shift = map(pow(noiseVal, 5), 0, 1, 0, letterWidth/2) * shiftmult;
       let direction = j%2==0 ? 1 : -1
 
       push();
-      translate(shift*direction, 0);
+      //translate(shift*direction, 0);
 
       let lerpAmount = map(j, 0, sublines, 0, 1);
       let y = map(j, 0, sublines, 0, letterHeight/numLines);
