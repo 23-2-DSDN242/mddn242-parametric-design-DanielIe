@@ -77,8 +77,10 @@ function drawLetterForm(fillColour, letterData) {
   for(let i = 0; i < numLines; i++) {
     push();
     if(glitchOffset > 30 && glitchOffset < 40 && i%2 == 0) {
+      c.setAlpha(255);
       let bigGlitch = 1 - ((i+4)%4);
-      scale(1 + bigGlitch*0.4, 1 + bigGlitch*0.4);
+      let scaleGlitch = 1 - ((i+4)%3);
+      scale(1 + scaleGlitch*0.4, 1 + scaleGlitch*0.4);
       translate(bigGlitch*(letterWidth/10)-(letterWidth/10),0);
       drawingContext.shadowColor = color(0,255,0);
     }
