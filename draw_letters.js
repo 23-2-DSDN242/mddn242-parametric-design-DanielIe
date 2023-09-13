@@ -26,9 +26,9 @@ const shiftmult = 0.7;
  * from (0,0) to (100, 200)
  */
 function drawLetter(letterData) {
+  drawingContext.shadowColor = color(200,255,255);
 
   noiseSeed(25);
-  // determine parameters for second circle
   
   strokeCap(SQUARE);
 
@@ -75,6 +75,14 @@ function drawLetterForm(fillColour, letterData) {
   glitchOffset = abs(glitchOffset);
 
   for(let i = 0; i < numLines; i++) {
+    push();
+    if(glitchOffset > 30 && glitchOffset < 40 && i%2 == 0) {
+      let bigGlitch = 1 - ((i+4)%4);
+      scale(1 + bigGlitch*0.4, 1 + bigGlitch*0.4);
+      translate(bigGlitch*(letterWidth/10)-(letterWidth/10),0);
+      drawingContext.shadowColor = color(0,255,0);
+    }
+
     let num = i+1;
 
     let lineCoords = getCoords(num, 'l', letterWidth, letterHeight, letterData);
@@ -89,6 +97,12 @@ function drawLetterForm(fillColour, letterData) {
     stroke(c);
 
     for(let j = 0; j < sublines; j++) {
+      if(j == 0) {
+        drawingContext.shadowBlur = 50;
+      } else {
+        drawingContext.shadowBlur = 0;
+      }
+
       console.log(glitchOffset);
 
       let noiseVal = noise((i*sublines+j)*0.8, glitchOffset*0.05);
@@ -112,11 +126,12 @@ function drawLetterForm(fillColour, letterData) {
     prevLineCoords = lineCoords;
     prevContourCoords = contourCoords;
 
+    pop();
+
     translate(0, letterHeight/numLines);
 
   }
 }
-
 
 function getCoords(lineNum, prefix, letterWidth, letterHeight, letterData) {
   let currentLine = letterData[prefix + lineNum.toString()];
@@ -132,7 +147,6 @@ function getCoords(lineNum, prefix, letterWidth, letterHeight, letterData) {
 
 function interpolate_letter(percent, oldObj, newObj) {
   let new_letter = {};
-
 
   for(let i = 1; i < 11; i++) {
     let line = "l" + i.toString();
@@ -150,8 +164,6 @@ function interpolate_letter(percent, oldObj, newObj) {
 
     new_letter['percent'] = map(percent, 0, 100, -50, 50);
   }
-
-
 
   return new_letter;
 }
