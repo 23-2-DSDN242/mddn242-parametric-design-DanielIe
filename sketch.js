@@ -88,7 +88,7 @@ const letterC = {
   "c10": 0.5
 }
 
-const backgroundColor  = "#090a24";
+const backgroundColor  = "#000000";
 
 const red  = "#c40834";
 const yellow = "#ebbb38";
@@ -122,50 +122,56 @@ function draw () {
 }
 
 
-
+// Draw a letter
 function drawLetter(posx, posy, letterData) {
-  // determine parameters for second circle
   
   strokeCap(SQUARE);
 
+  // Translate to center of letter
   push();
   translate(posx-letterWidth/2, posy);
 
+  // Draw blue layer
   push();
-  translate(-20, 3);
+  translate(-20, 0);
   drawLetterForm(blue, letterData);
   pop();
 
+  // Draw red layer
   push();
-  translate(20, -2);
+  translate(20, 0);
   drawLetterForm(red, letterData);
   pop();
 
+  // Draw yellow layer
   push();
-  translate(10, -3);
+  translate(10, 0);
   drawLetterForm(yellow, letterData);
   pop();
 
+  // Draw cyan layer
   push();
-  translate(-10, 5);
+  translate(-10, 0);
   drawLetterForm(cyan, letterData);
   pop();
 
   
-
+  // Draw white layer
   drawLetterForm(white, letterData);
 
   pop();
 
 }
 
-
+// Draw the form of a letter in the specified colour
 function drawLetterForm(fillColour, letterData) {
   let c = color(fillColour);
 
+  // Store previously drawn line/contour coords
   let prevLineCoords;
   let prevContourCoords;
 
+  // Draw all 10 lines
   for(let i = 0; i < numLines; i++) {
     let num = i+1;
 
@@ -180,26 +186,24 @@ function drawLetterForm(fillColour, letterData) {
     strokeWeight(letterHeight/numLines/sublines);
     stroke(c);
 
+    // Draw sublines for each line
     for(let j = 0; j < 4; j++) {
-      //let noiseVal = noise((i*sublines+j)*0.8);
-      //let shift = map(pow(noiseVal, 5), 0, 1, 0, letterWidth/2) * shiftmult;
-      let direction = j%2==0 ? 1 : -1
 
-      push();
-      //translate(shift*direction, 0);
-
+      // Get amount to interpolate between last line and current line
       let lerpAmount = map(j, 0, sublines, 0, 1);
       let y = map(j, 0, sublines, 0, letterHeight/numLines);
     
+      // Interpolate
       let currentLine = p5.Vector.lerp(prevLineCoords, lineCoords, lerpAmount);
       let currentContour = p5.Vector.lerp(prevContourCoords, contourCoords, lerpAmount);
+
+      // Draw line
       line(currentLine.x, y, currentContour.x, y);
       line(currentContour.y, y, currentLine.y, y);
 
-      pop();
     }
-
     
+    // Update previous coords
     prevLineCoords = lineCoords;
     prevContourCoords = contourCoords;
 
@@ -209,6 +213,7 @@ function drawLetterForm(fillColour, letterData) {
 }
 
 
+// Return the coordinates of where a line should start and end
 function getCoords(lineNum, prefix, letterWidth, letterHeight, letterData) {
   let currentLine = letterData[prefix + lineNum.toString()];
   let lineWidth = floor(currentLine);
