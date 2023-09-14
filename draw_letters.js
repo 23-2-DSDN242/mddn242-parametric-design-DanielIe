@@ -89,8 +89,8 @@ function drawLetterForm(fillColour, letterData) {
 
     push();
 
-    // Draw the frame as glitched if interpolation is between 30% and 50%
-    if(glitchOffset > 30 && glitchOffset < 50 && i%2 == 0 && letterData['percent'] < 0) {
+    // Draw the frame as glitched if interpolation is between 10% and 30%
+    if(glitchOffset > 25 && glitchOffset < 55 && i%2 == 0 && letterData['percent'] < 0) {
       c.setAlpha(255);
       let bigGlitch = 1 - ((i+4)%4);
       let scaleGlitch = 1 - ((i+4)%3);
